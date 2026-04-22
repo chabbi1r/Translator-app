@@ -7,18 +7,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Extract project
+        run: unzip NvidiaTranslator-Android-Source.zip
+
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Make gradlew executable
-        run: chmod +x gradlew
+        run: |
+          cd android-nvidia-translator
+          chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Build APK
+        run: |
+          cd android-nvidia-translator
+          ./gradlew assembleDebug
 
       - uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: android-nvidia-translator/app/build/outputs/apk/debug/app-debug.apk
