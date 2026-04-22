@@ -15,15 +15,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Make gradlew executable
+      - name: Install Gradle
         run: |
-          cd android-nvidia-translator
-          chmod +x gradlew
+          wget https://services.gradle.org/distributions/gradle-8.4-bin.zip
+          unzip gradle-8.4-bin.zip
+          export PATH=$PATH:$(pwd)/gradle-8.4/bin
+          echo "$(pwd)/gradle-8.4/bin" >> $GITHUB_PATH
 
       - name: Build APK
         run: |
           cd android-nvidia-translator
-          ./gradlew assembleDebug
+          gradle assembleDebug --no-daemon
 
       - uses: actions/upload-artifact@v4
         with:
